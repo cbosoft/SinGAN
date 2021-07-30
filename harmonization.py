@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 
 from config import cfg, finalise
 
-from SinGAN.manipulate import SinGAN_generate
+from SinGAN.generate import generate_image
 from SinGAN.util.imresize import imresize, imresize_to_shape
 import SinGAN.util as util
 
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     in_s = in_s[:, :, :reals[n - 1].shape[2], :reals[n - 1].shape[3]]
     in_s = imresize(in_s, 1 / cfg.scale_factor, cfg)
     in_s = in_s[:, :, :reals[n].shape[2], :reals[n].shape[3]]
-    out = SinGAN_generate(Gs[n:], Zs[n:], reals, NoiseAmp[n:], cfg, in_s, n=n, num_samples=cfg.harmonisation.num_samples)
+    out = generate_image(Gs[n:], Zs[n:], reals, NoiseAmp[n:], cfg, in_s, n=n, num_samples=cfg.harmonisation.num_samples)
 
     out = (1 - mask)*real + mask*out
     out = util.convert_image_np(out.detach())
