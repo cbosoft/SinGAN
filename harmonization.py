@@ -46,7 +46,6 @@ if __name__ == '__main__':
     out = (1 - mask)*real + mask*out
     out = util.convert_image_np(out.detach())
     plt.imsave(f'{cfg.output_dir}/start_scale={cfg.harmonisation.start_scale}.png', out, vmin=0, vmax=1)
-    plt.imsave('foo.png', out, vmin=0, vmax=1)
 
 
 
