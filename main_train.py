@@ -1,33 +1,29 @@
-import shutil
+import argparse
 
-from config import get_arguments
-from SinGAN.manipulate import *
-from SinGAN.training import *
-import SinGAN.functions as functions
+from config import cfg, finalise
+from SinGAN.training import train
+from SinGAN.util import read_image, adjust_scales_to_image
 
 
 if __name__ == '__main__':
-    parser = get_arguments()
-    parser.add_argument('--input_dir', help='input image dir', default='Input/Images')
-    parser.add_argument('--input_name', help='input image name', required=True)
-    parser.add_argument('--mode', help='task to be done', default='train')
-    opt = parser.parse_args()
-    opt = functions.post_config(opt)
-    Gs = []
-    Zs = []
-    reals = []
-    NoiseAmp = []
-    dir2save = functions.generate_dir2save(opt)
 
-    if (os.path.exists(dir2save)):
-        print('trained model already exists; deleting')
-        shutil.rmtree(dir2save)
+    # Parse command line arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--config', help='config file path', type=str, required=True)
+    args = parser.parse_args()
+    cfg.merge_from_file(args.config)
+    finalise(cfg)
 
-    try:
-        os.makedirs(dir2save)
-    except OSError:
-        pass
-    real = functions.read_image(opt)
-    functions.adjust_scales2image(real, opt)
-    train(opt, Gs, Zs, reals, NoiseAmp)
-    SinGAN_generate(Gs,Zs,reals,NoiseAmp,opt)
+    # Read training image
+    real = read_image(cfg.training.image, cfg)
+    adjusted = adjust_scales_to_image(real, cfg)
+
+    # Data store for training params/weights?
+    data = Gs, Zs, reals, noise_amp = [], [], [], []
+
+    # Train!
+    train(*data, cfg)
+    print(cfg.training.date)
+
+    # Generate? Check if the trained model works?
+    # SinGAN_generate(*data, cfg)
