@@ -55,7 +55,7 @@ training:
 When training, this is sufficient. When performing generation however, there are more things to consider. For all generation techniques, you will need to pass the training date, to tell SinGAN (remix) which version of the trained model to use:
 
 ```yaml
-mode: train
+mode: 'train'
 training:
   image: 'starry_night.png'
   date: '2021-07-30_08-35-00'
@@ -66,7 +66,7 @@ training:
 In harmonisation, you need to give SinGAN a reference and a background image. You can also give it a scale to start the generation at (defaults to zero). Dilation radius is used to blur the mask when pasting the harmonised image back - a bigger radius will result in a bigger 'halo' effect around the harmonised object.
 
 ```yaml
-mode: train
+mode: 'harmonisation'
 training:
   image: 'starry_night.png'
   date: '2021-07-30_08-35-00'
