@@ -10,7 +10,7 @@ def run_task_harmonisation(cfg):
     real = util.adjust_scales_to_image(real, cfg)
 
     Gs, Zs, reals, NoiseAmp = util.load_trained_pyramid(cfg.training.models_dir)
-    assert 1 <= cfg.harmonisation.start_scale < len(Gs), f'start scale should be in [1 and {len(Gs)}) '
+    assert 1 <= cfg.harmonisation.start_scale < len(Gs), f'start scale should be in [1, {len(Gs)}) '
 
     ref_name = cfg.harmonisation.reference_image
     ref = util.read_image(ref_name, cfg)
