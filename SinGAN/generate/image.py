@@ -44,7 +44,11 @@ def generate_image(Gs, Zs, reals, NoiseAmp, cfg, in_s=None, scale_v=1, scale_h=1
             if n < gen_start_scale:
                 z_curr = Z_opt
 
-            z_in = noise_amp*z_curr + I_prev
+            try:
+                z_in = noise_amp*z_curr + I_prev
+            except RuntimeError as e:
+                raise RuntimeError(f'Shape mismatch in generate ({z_curr.shape, I_prev.shape}). Try in/decreasing min/max_size in config.') from e
+
             I_curr = G(z_in.detach(), I_prev)
 
             # if n == len(reals)-1:

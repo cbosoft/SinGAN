@@ -60,7 +60,6 @@ def train(Gs, Zs, reals, NoiseAmp, cfg):
     return
 
 
-
 def train_single_scale(netD, netG, reals, Gs, Zs, in_s, NoiseAmp, cfg, centers=None):
     real = reals[len(Gs)]
     nzx = real.shape[2]
@@ -112,7 +111,10 @@ def train_single_scale(netD, netG, reals, Gs, Zs, in_s, NoiseAmp, cfg, centers=N
             # train with real
             netD.zero_grad()
 
-            output = netD(real).to(cfg.device)
+            try:
+                output = netD(real).to(cfg.device)
+            except RuntimeError as e:
+                raise RuntimeError('kernel size/image size mis-match. Try increasing/decreasing min/max_size in config to better match the size of your image.') from e
             #D_real_map = output.detach()
             errD_real = -output.mean()#-a
             errD_real.backward(retain_graph=True)
