@@ -1,5 +1,6 @@
 from .train import run_task_train
 from .harmonisation import run_task_harmonisation
+from .painting import run_task_painting
 
 task_list = [lv[9:] for lv in locals().keys() if lv.startswith('run_task_')]
 

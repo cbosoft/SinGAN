@@ -64,6 +64,13 @@ cfg.harmonisation.start_scale = 1
 cfg.harmonisation.dilation_radius = 7
 cfg.harmonisation.num_samples = 1
 
+# Painting
+cfg.painting = CfgNode()
+cfg.painting.reference_image = None
+cfg.painting.start_scale = None
+cfg.painting.quantisation = False  # specify if to perform color quantization training
+cfg.painting.invert_image = False
+
 
 def finalise(c):
     '''called on `cfg` after merging in user config file; sets fixed parameters'''
@@ -99,6 +106,14 @@ def finalise(c):
         c.output_dir = f'{c.output_dir}/{c.mode}/{c.run_key}/ref={ref_noext},bg={bg_noext}'
         print(f'Trained models will be loaded from "{c.training.models_dir}"')
         print(f'Harmonisation results will be saved to "{c.output_dir}"')
+    elif c.mode == 'painting':
+        ref_name = os.path.basename(c.painting.reference_image)
+        ref_noext = ref_name[:ref_name.rfind('.')]
+        c.output_dir = f'{c.output_dir}/{c.mode}/{c.run_key}/ref={ref_noext}'
+        print(f'Trained models will be loaded from "{c.training.models_dir}"')
+        print(f'Painting results will be saved to "{c.output_dir}"')
+    else:
+        raise Exception(f'unknown mode: {c.mode}')
     os.makedirs(c.output_dir, exist_ok=True)
 
     if c.seed is None:
