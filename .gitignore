@@ -1,5 +1,13 @@
-# Don't track content of these folders
+# Images, Outputs, Models
+Input
 Output/
 TrainedModels/
-__pycache__/
+
+# Editor stuff
 .idea
+tags
+
+# Python stuff
+__pycache__
+*.pyc
+.env
