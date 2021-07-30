@@ -21,31 +21,31 @@ def generate_image(Gs, Zs, reals, NoiseAmp, cfg, in_s=None, scale_v=1, scale_h=1
 
         for i in range(num_samples):
             if n == 0:
-                z_curr = util.generate_noise([1,nzx,nzy], device=cfg.device)
-                z_curr = z_curr.expand(1,3,z_curr.shape[2],z_curr.shape[3])
+                z_curr = util.generate_noise([1, nzx, nzy], device=cfg.device)
+                z_curr = z_curr.expand(1, 3, z_curr.shape[2], z_curr.shape[3])
                 z_curr = m(z_curr)
             else:
-                z_curr = util.generate_noise([cfg.noise_channels,nzx,nzy], device=cfg.device)
+                z_curr = util.generate_noise([cfg.noise_channels, nzx, nzy], device=cfg.device)
                 z_curr = m(z_curr)
 
             if not images_prev:
                 I_prev = m(in_s)
             else:
                 I_prev = images_prev[i]
-                I_prev = util.imresize(I_prev,1/cfg.scale_factor, cfg)
+                I_prev = util.imresize(I_prev, 1/cfg.scale_factor, cfg)
                 if cfg.mode != "SR":
                     I_prev = I_prev[:, :, 0:round(scale_v * reals[n].shape[2]), 0:round(scale_h * reals[n].shape[3])]
                     I_prev = m(I_prev)
                     I_prev = I_prev[:, :, 0:z_curr.shape[2], 0:z_curr.shape[3]]
-                    I_prev = util.upsampling(I_prev,z_curr.shape[2], z_curr.shape[3])
+                    I_prev = util.upsampling(I_prev, z_curr.shape[2], z_curr.shape[3])
                 else:
                     I_prev = m(I_prev)
 
             if n < gen_start_scale:
                 z_curr = Z_opt
 
-            z_in = noise_amp*(z_curr)+I_prev
-            I_curr = G(z_in.detach(),I_prev)
+            z_in = noise_amp*z_curr + I_prev
+            I_curr = G(z_in.detach(), I_prev)
 
             # if n == len(reals)-1:
             #     assert cfg.mode == 'harmonisation'

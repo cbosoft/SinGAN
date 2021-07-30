@@ -7,7 +7,7 @@ from .imresize import imresize
 
 
 def create_reals_pyramid(real, reals, cfg):
-    real = real[:,0:3,:,:]
+    real = real[:, 0:3, :, :]  # only RGB components
     for i in range(cfg.stop_scale+1):
         scale = math.pow(cfg.scale_factor, cfg.stop_scale - i)
         curr_real = imresize(real, scale, cfg)
