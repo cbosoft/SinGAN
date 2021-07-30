@@ -18,13 +18,10 @@ if __name__ == '__main__':
 
     assert cfg.mode == 'harmonisation'
 
-    data = Gs, Zs, reals, NoiseAmp = [], [], [], []
-
     real = util.read_image(cfg.harmonisation.background_image, cfg)
     real = util.adjust_scales_to_image(real, cfg)
 
-    model_path = f'{cfg.training.models_dir}/{cfg.harmonisation.start_scale}'
-    Gs, Zs, reals, NoiseAmp = util.load_trained_pyramid(model_path)
+    Gs, Zs, reals, NoiseAmp = util.load_trained_pyramid(cfg.training.models_dir)
     assert 1 <= cfg.harmonisation.start_scale < len(Gs), f'start scale should be in [1 and {len(Gs)}) '
 
     ref_name = cfg.harmonisation.reference_image
@@ -44,10 +41,12 @@ if __name__ == '__main__':
     in_s = in_s[:, :, :reals[n - 1].shape[2], :reals[n - 1].shape[3]]
     in_s = imresize(in_s, 1 / cfg.scale_factor, cfg)
     in_s = in_s[:, :, :reals[n].shape[2], :reals[n].shape[3]]
-    out = SinGAN_generate(Gs[n:], Zs[n:], reals, NoiseAmp[n:], cfg, in_s, n=n, num_samples=1)
+    out = SinGAN_generate(Gs[n:], Zs[n:], reals, NoiseAmp[n:], cfg, in_s, n=n, num_samples=cfg.harmonisation.num_samples)
 
-    # out = (1 - mask)*real + mask*out
-    plt.imsave(f'{cfg.output_dir}/start_scale={cfg.harmonisation.start_scale}.png', util.convert_image_np(out.detach()), vmin=0, vmax=1)
+    out = (1 - mask)*real + mask*out
+    out = util.convert_image_np(out.detach())
+    plt.imsave(f'{cfg.output_dir}/start_scale={cfg.harmonisation.start_scale}.png', out, vmin=0, vmax=1)
+    plt.imsave('foo.png', out, vmin=0, vmax=1)
 
 
 

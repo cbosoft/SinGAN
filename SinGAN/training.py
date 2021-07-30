@@ -50,10 +50,10 @@ def train(Gs, Zs, reals, NoiseAmp, cfg):
         Zs.append(z_curr)
         NoiseAmp.append(cfg.noise_amp)
 
-        torch.save(Zs, f'{outp_sdir}/Zs.pth')
-        torch.save(Gs, f'{outp_sdir}/Gs.pth')
-        torch.save(reals, f'{outp_sdir}/reals.pth')
-        torch.save(NoiseAmp, f'{outp_sdir}/NoiseAmp.pth')
+        torch.save(Zs, f'{outp}/Zs.pth')
+        torch.save(Gs, f'{outp}/Gs.pth')
+        torch.save(reals, f'{outp}/reals.pth')
+        torch.save(NoiseAmp, f'{outp}/NoiseAmp.pth')
 
         nfc_prev = cfg.nfc
         del D_curr, G_curr
