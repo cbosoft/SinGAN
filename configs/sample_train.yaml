@@ -1,0 +1,5 @@
+mode: 'train'
+training:
+  image: 'Input/Images/starry_night.png'
+  date: 'SAMPLE'
+niter: 100

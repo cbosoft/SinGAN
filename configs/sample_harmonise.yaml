@@ -1,0 +1,9 @@
+mode: 'harmonisation'
+training:
+  image: 'Input/Images/starry_night.png'
+  date: 'SAMPLE'
+harmonisation:
+  start_scale: 4
+  background_image: 'Input/Images/starry_night.png'
+  reference_image: 'Input/Harmonization/starry_night_naive.png'
+niter: 100
