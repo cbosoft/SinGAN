@@ -32,8 +32,8 @@ cfg.min_size = 25
 cfg.max_size = 250
 
 # Optimisation hyper parameters
-cfg.niter = 2000 # training epochs per scale
-cfg.gamma = 0.1 # scheduler gamma
+cfg.niter = 2000  # training epochs per scale
+cfg.gamma = 0.1  # scheduler gamma
 cfg.beta1 = 0.5
 cfg.lambda_grad = 0.1
 cfg.alpha = 10
@@ -41,12 +41,12 @@ cfg.alpha = 10
 cfg.generator = CfgNode()
 cfg.generator.lr = 5e-4
 cfg.generator.steps = 3
-cfg.generator.path = None # path to previous checkpoint, e.g. to continue training
+cfg.generator.path = None  # path to previous checkpoint, e.g. to continue training
 
 cfg.discriminator = CfgNode()
 cfg.discriminator.lr = 5e-4
 cfg.discriminator.steps = 3
-cfg.discriminator.path = None # path to previous checkpoint, e.g. to continue training
+cfg.discriminator.path = None  # path to previous checkpoint, e.g. to continue training
 
 cfg.mode = None
 
@@ -62,6 +62,8 @@ cfg.harmonisation.reference_image = None
 cfg.harmonisation.background_image = None
 cfg.harmonisation.start_scale = 1
 cfg.harmonisation.dilation_radius = 7
+cfg.harmonisation.num_samples = 1
+
 
 def finalise(c):
     '''called on `cfg` after merging in user config file; sets fixed parameters'''
@@ -86,7 +88,7 @@ def finalise(c):
     if c.mode == 'train':
         # c.training.models_dir = f'TrainedModels/{c.run_key}/scale_factor={c.scale_factor}/'
         c.output_dir = c.training.models_dir # f'TrainedModels/{c.run_key}/scalefactor={c.scale_factor}_alpha={c.alpha}'
-        if os.path.exists(c.output_dir):
+        if os.path.exists(c.output_dir) and c.training.date != 'SAMPLE':
             raise Exception(f'Model target path "{c.output_dir}" already exists. Will not overwrite.')
         print(f'Trained models will be saved to "{c.output_dir}"')
     elif c.mode == 'harmonisation':
