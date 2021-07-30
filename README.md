@@ -79,7 +79,7 @@ harmonisation:
 
 ### Painting
 
-Painting is where you give it a mask (colour matched so that trees are green and the sky is blue), and SinGAN performs inverse segmentation and forms a plausible original image. You only need to give SinGAN a reference image (the colour-matched mask) and a scale.
+Painting is where you give it a mask (colour matched e.g. so that trees are green and the sky is blue), and SinGAN performs inverse segmentation and forms a plausible original image. You only need to give SinGAN a reference image (the colour-matched mask) and a scale.
 
 ```yaml
 mode: 'painting'
