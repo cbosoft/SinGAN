@@ -4,7 +4,6 @@ import numpy as np
 from scipy.ndimage import filters, measurements, interpolation
 from skimage import color
 from math import pi
-#from SinGAN.functions import torch2uint8, np2torch
 import torch
 
 
@@ -21,21 +20,19 @@ def move_to_gpu(t):
         t = t.to(torch.device('cuda'))
     return t
 
-def np2torch(x,opt):
-    if opt.nc_im == 3:
+
+def np2torch(x, cfg):
+    if cfg.image_channels == 3:
         x = x[:,:,:,None]
         x = x.transpose((3, 2, 0, 1))/255
     else:
         x = color.rgb2gray(x)
         x = x[:,:,None,None]
         x = x.transpose(3, 2, 0, 1)
-    x = torch.from_numpy(x)
-    if not (opt.not_cuda):
-        x = move_to_gpu(x)
-    x = x.type(torch.cuda.FloatTensor) if not(opt.not_cuda) else x.type(torch.FloatTensor)
-    #x = x.type(torch.cuda.FloatTensor)
+    x = torch.from_numpy(x).to(cfg.device).float()
     x = norm(x)
     return x
+
 
 def torch2uint8(x):
     x = x[0,:,:,:]
@@ -46,20 +43,17 @@ def torch2uint8(x):
     return x
 
 
-def imresize(im,scale,opt):
-    #s = im.shape
+def imresize(im, scale, cfg):
     im = torch2uint8(im)
     im = imresize_in(im, scale_factor=scale)
-    im = np2torch(im,opt)
-    #im = im[:, :, 0:int(scale * s[2]), 0:int(scale * s[3])]
+    im = np2torch(im, cfg)
     return im
 
-def imresize_to_shape(im,output_shape,opt):
-    #s = im.shape
+
+def imresize_to_shape(im, output_shape, cfg):
     im = torch2uint8(im)
     im = imresize_in(im, output_shape=output_shape)
-    im = np2torch(im,opt)
-    #im = im[:, :, 0:int(scale * s[2]), 0:int(scale * s[3])]
+    im = np2torch(im, cfg)
     return im
 
 
