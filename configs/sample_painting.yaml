@@ -1,0 +1,7 @@
+mode: 'painting'
+training:
+  image: 'Input/Images/starry_night.png'
+  date: 'SAMPLE'
+painting:
+  start_scale: 4
+  reference_image: 'Input/Harmonization/starry_night_naive.png'
