@@ -8,7 +8,7 @@ The original SinGAN ([paper](https://arxiv.org/pdf/1905.01164.pdf), [code](https
 See [original readme](ORIGINAL_README.md) for more information on the original
 project.
 
-**Only harmonisation is supported at the moment**. I have yet to update the other operation modes to reflect the new project layout.
+**Only harmonisation and painting are supported at the moment**. I have yet to update the other operation modes to reflect the new project layout.
 
 ## Installation
 
@@ -75,4 +75,18 @@ harmonisation:
   background_image: 'starry_night.png'
   start_scale: 6
   dilation_radius: 5
+```
+
+### Painting
+
+Painting is where you give it a mask (colour matched so that trees are green and the sky is blue), and SinGAN performs inverse segmentation and forms a plausible original image. You only need to give SinGAN a reference image (the colour-matched mask) and a scale.
+
+```yaml
+mode: 'painting'
+training:
+  image: 'starry_night.png'
+  date: '2021-07-30_08-35-00'
+harmonisation:
+  reference_image: 'starry_night_naive.png'
+  start_scale: 6
 ```
