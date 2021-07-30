@@ -4,6 +4,7 @@ import math
 import torch.nn as nn
 import torch.optim as optim
 import torch.utils.data
+from tqdm import trange
 
 import matplotlib.pyplot as plt
 
@@ -19,6 +20,7 @@ def train(Gs, Zs, reals, NoiseAmp, cfg):
     nfc_prev = 0
     outp = cfg.training.models_dir
 
+    for scale_num in trange(cfg.stop_scale+1, unit='scale'):
         cfg.nfc = min(cfg.nfc_init * pow(2, math.floor(scale_num / 4)), 128)
         cfg.min_nfc = min(cfg.min_nfc_init * pow(2, math.floor(scale_num / 4)), 128)
 
@@ -91,9 +93,9 @@ def train_single_scale(netD, netG, reals, Gs, Zs, in_s, NoiseAmp, cfg, centers=N
     errG2plot = []
     D_real2plot = []
     D_fake2plot = []
-    for epoch in range(opt.niter):
     z_cfg2plot = []
 
+    for epoch in trange(cfg.niter, unit=f'epoch'):
         if Gs == [] and cfg.mode != 'SR_train':
             z_cfg = util.generate_noise([1, nzx, nzy], device=cfg.device)
             z_cfg = m_noise(z_cfg.expand(1, 3, nzx, nzy))
