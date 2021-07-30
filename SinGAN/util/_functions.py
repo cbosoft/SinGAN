@@ -124,14 +124,6 @@ def calc_gradient_penalty(netD, real_data, fake_data, LAMBDA, device):
     gradient_penalty = ((gradients.norm(2, dim=1) - 1) ** 2).mean() * LAMBDA
     return gradient_penalty
 
-def read_image_dir(dir,opt):
-    x = img.imread('%s' % (dir))
-    if len(x.shape) != 3 or x.shape[-1] == 1:
-        x = color.gray2rgb(x)
-    x = np2torch(x,opt)
-    x = x[:,0:3,:,:]
-    return x
-
 def torch2uint8(x):
     x = x[0,:,:,:]
     x = x.permute((1,2,0))
