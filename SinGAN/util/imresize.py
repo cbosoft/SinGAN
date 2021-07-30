@@ -1,19 +1,24 @@
 # This code was taken from: https://github.com/assafshocher/resizer by Assaf Shocher
+from math import pi
+import warnings
 
 import numpy as np
 from scipy.ndimage import filters, measurements, interpolation
 from skimage import color
-from math import pi
 import torch
+
+warnings.filterwarnings('ignore', message='The behavior of rgb2gray will change in', category=FutureWarning)
 
 
 def denorm(x):
     out = (x + 1) / 2
     return out.clamp(0, 1)
 
+
 def norm(x):
     out = (x - 0.5) * 2
     return out.clamp(-1, 1)
+
 
 def move_to_gpu(t):
     if (torch.cuda.is_available()):
