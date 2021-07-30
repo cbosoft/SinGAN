@@ -1,23 +1,11 @@
-import argparse
-
 from matplotlib import pyplot as plt
-
-from config import cfg, finalise
 
 from SinGAN.generate import generate_image
 from SinGAN.util.imresize import imresize, imresize_to_shape
 import SinGAN.util as util
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--config', help='config path', required=True)
-    args = parser.parse_args()
-    cfg.merge_from_file(args.config)
-    cfg = finalise(cfg)
-
-    assert cfg.mode == 'harmonisation'
-
+def run_task_harmonisation(cfg):
     real = util.read_image(cfg.harmonisation.background_image, cfg)
     real = util.adjust_scales_to_image(real, cfg)
 
@@ -46,7 +34,3 @@ if __name__ == '__main__':
     out = (1 - mask)*real + mask*out
     out = util.convert_image_np(out.detach())
     plt.imsave(f'{cfg.output_dir}/start_scale={cfg.harmonisation.start_scale}.png', out, vmin=0, vmax=1)
-
-
-
-
