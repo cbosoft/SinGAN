@@ -17,10 +17,6 @@ from sklearn.cluster import KMeans
 
 # custom weights initialization called on netG and netD
 
-def read_image(opt):
-    x = img.imread('%s%s' % (opt.input_img,opt.ref_image))
-    return np2torch(x)
-
 def denorm(x):
     out = (x + 1) / 2
     return out.clamp(0, 1)
@@ -148,12 +144,16 @@ def calc_gradient_penalty(netD, real_data, fake_data, LAMBDA, device):
 
 def read_image(opt):
     x = img.imread('%s/%s' % (opt.input_dir,opt.input_name))
+    if len(x.shape) != 3 or x.shape[-1] == 1:
+        x = color.gray2rgb(x)
     x = np2torch(x,opt)
     x = x[:,0:3,:,:]
     return x
 
 def read_image_dir(dir,opt):
     x = img.imread('%s' % (dir))
+    if len(x.shape) != 3 or x.shape[-1] == 1:
+        x = color.gray2rgb(x)
     x = np2torch(x,opt)
     x = x[:,0:3,:,:]
     return x
