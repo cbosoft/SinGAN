@@ -42,7 +42,7 @@ python run.py configs/sample_harmonisation.yaml
 
 ## Config files
 
-Run configuration is taken care of within a config file to create self-contained and repeatable experiment. This makes it easier to test behaviour and creates a documentation trail (the idea being you copy and edit the config files as you make changes).
+Run configuration is taken care of within a config file to create self-contained and repeatable experiment (see [yacs](https://github.com/rbgirshick/yacs) for more defense of this approach). This makes it easier to test behaviour and creates a documentation trail (the idea being you create a new copy as you make changes to the config files).
 
 Each config file must specify at least two things: the 'mode' of operation, and the image to train on (or that was trained on).
 
@@ -63,7 +63,7 @@ training:
 
 ### Harmonisation
 
-In harmonisation, you need to give SinGAN a reference and a background image. You can also give it a scale to start the generation at (defaults to zero).
+In harmonisation, you need to give SinGAN a reference and a background image. You can also give it a scale to start the generation at (defaults to zero). Dilation radius is used to blur the mask when pasting the harmonised image back - a bigger radius will result in a bigger 'halo' effect around the harmonised object.
 
 ```yaml
 mode: train
